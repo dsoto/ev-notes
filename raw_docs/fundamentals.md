@@ -16,32 +16,121 @@
 
 # Motor principles
 
-- A current carrying coil of wire creates a magnetic field
-- This magnetic field exerts a torque on a magnetic field
+The operation of a motor relies on the interaction of current and magnetic fields.
 
-## Simple DC Motor Model
+# Linear Motor
 
-This simple model allows us to predict the behavior of many motor types.
+This linear DC motor allows us to predict the behavior of many motor types.
 
-![](./figures_static/motor-equivalent-circuit.png)
-![](./figures_static/simple-DC-motor-fields.png)
-![](./figures_static/simple-DC-motor.png)
+- The force on a wire is proportional to the magnetic field, the current in the wire, and the length of the wire and is independent of the velocity of the wire.
+- The voltage induced in the wire (back-EMF) is proportional to the magnetic field, the length of the wire, and the wire's velocity.
 
-## Torque and Current
-
-Torque is equal to the field times the current times the length of wire.
 
 $$T = BIl$$
 
-## Voltage and Angular Velocity
-
-The induced voltage or back-emf, is equal to the field times the length of wire times the velocity of the wire.
-
 $$E = Blv$$
 
-## Heating Loss
+![](./figures_static/simple-DC-motor-fields.png)
+![](./figures_static/simple-DC-motor.png)
 
-The electrical input power equals the mechanical output power plus the copper loss or heating ($I^2R$).
+# DC Motor Constant
+
+When we look at a rotating motor, the magnetic and wire properties are combined in the motor constant $k$.
+
+The torque is proportional to the current through the motor and this constant, $k$.
+
+$$ T = k I $$
+
+The induced back EMF is proportional to the speed of the motor, $\omega$ and this constant $k$.
+
+$$ E = k \omega $$
+
+Motor specification sheets often publish another form of $k$, called $Kv$ which is in units of RPM per volt.
+
+$$ E = RPM / Kv $$
+
+
+
+
+# Equivalent Circuit
+
+To understand the behavior of a motor at steady state, an equivalent circuit with a speed dependent voltage and a resistor is used.
+Much of the intuition we gain from this simple 2-terminal DC motor applies to the 3-terminal BLDC motor.
+
+Here is the circuit of the motor connected to the voltage source.
+
+```{.python .cb.run}
+import schemdraw
+import schemdraw.elements as elm
+d = schemdraw.Drawing()
+d += elm.BatteryCell().up().reverse().label('V')
+d += elm.Line().right()
+d += elm.Motor().down()
+d += elm.Line().left()
+
+d.draw(show=False)
+filename = 'figures/motor-circuit.svg'
+d.save(filename)
+markdown = '![](' + filename + ')'
+```
+
+`markdown`{.python .cb.expr}
+
+Here is the equivalent circuit for the motor.
+
+```{.python .cb.run}
+import schemdraw
+import schemdraw.elements as elm
+d = schemdraw.Drawing()
+d += elm.BatteryCell().up().reverse().label('V').length(6)
+d += (topline := elm.Line().right())
+d += elm.CurrentLabel().at(topline).label(r'$I=\tau/k$')
+d += elm.Resistor().down().label('R')
+d += elm.Source().down().label('$E=k\omega$')
+d += elm.Line().left()
+
+d.draw(show=False)
+filename = 'figures/motor-model.svg'
+d.save(filename)
+markdown = '![](' + filename + ')'
+```
+
+`markdown`{.python .cb.expr}
+
+With this model we can estimate
+
+- The power lost to heat in the motor. ($I^2 R$)
+- The difference between the applied voltage and the back-EMF based on the voltage drop from the resistance. ($IR$)
+
+The torque-current and speed-voltage relationships still apply.
+
+:::{.instructor}
+TODO: image of motor turning shaft with power torque etc.
+:::
+
+To model the dynamic electrical behavior of the motor, we add an inductor to our model.
+With this model, we can show how the current responds to rapid changes in voltage.
+These details are important for the current control loop of the motor.
+
+```{.python .cb.run}
+import schemdraw
+import schemdraw.elements as elm
+d = schemdraw.Drawing()
+d += elm.BatteryCell().up().reverse().label('V').length(9)
+d += (topline := elm.Line().right())
+# d += elm.CurrentLabel().at(topline).label(r'$I=\tau/k$')
+d += elm.Resistor().down().label('R')
+d += elm.Inductor().down().label('L')
+d += elm.Source().down().label('E')
+d += elm.Line().left()
+
+d.draw(show=False)
+filename = 'figures/motor-model-RL.svg'
+d.save(filename)
+markdown = '![](' + filename + ')'
+```
+
+`markdown`{.python .cb.expr}
 
 ## Power, Torque, and Angular Velocity
 
@@ -53,7 +142,7 @@ This is analagous to work equals force multiplied by distance.
 
 $$P = \tau \omega$$
 
-Power equals torque multiplied by the angular velocity.
+The mechanical power equals torque multiplied by the angular velocity.
 
 ## Voltage Constant
 
@@ -82,17 +171,6 @@ This needs to be refined for the torque at 30 mph
 
 
 :::
-
-# Motor Constants, Torque, and Speed
-
-The torque is proportional to the current through the motor.
-
-$$ T = k I $$
-
-The induced back EMF is proportional to the speed of the motor.
-
-$$ E = k \omega $$
-$$ E = RPM / Kv $$
 
 # No-Load Speed
 
@@ -130,45 +208,6 @@ You want your motor to spin at 60 rpm while providing 10 N-m of torque.
 - What should your applied voltage V be?
 
 Note that this is essentially a voltage divider question, so we use the same strategies but the physical conditions of the motor tell us about the induced voltage and the current flowing through the motor.
-
-Here is the circuit of the motor connected to the voltage source.
-
-```{.python .cb.run}
-import schemdraw
-import schemdraw.elements as elm
-d = schemdraw.Drawing()
-d += elm.BatteryCell().up().reverse().label('V')
-d += elm.Line().right()
-d += elm.Motor().down()
-d += elm.Line().left()
-
-d.draw(show=False)
-filename = 'figures/motor-circuit.svg'
-d.save(filename)
-markdown = '![](' + filename + ')'
-```
-
-`markdown`{.python .cb.expr}
-
-Here is the equivalent circuit for the motor.
-
-```{.python .cb.run}
-import schemdraw
-import schemdraw.elements as elm
-d = schemdraw.Drawing()
-d += elm.BatteryCell().up().reverse().label('V').length(6)
-d += elm.Line().right()
-d += elm.Resistor().down().label('R')
-d += elm.Source().down().label('EMF')
-d += elm.Line().left()
-
-d.draw(show=False)
-filename = 'figures/motor-model.svg'
-d.save(filename)
-markdown = '![](' + filename + ')'
-```
-
-`markdown`{.python .cb.expr}
 
 The voltage to operate the motor is the sum of the induced (back EMF) voltage, E, and the voltage across the resistor.
 We find E from the rpm and the motor constant.
