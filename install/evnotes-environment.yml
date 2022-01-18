@@ -1,0 +1,18 @@
+# > conda env create -f evnotes-environment.yml
+# > conda remove --name evnotes
+# TODO: add schemdraw
+name: evnotes
+channels:
+- conda-forge
+- defaults
+dependencies:
+- python=3.9
+- pip
+- pandoc=2.11.3.2
+- panflute=2.0.5
+- codebraid=0.5.0
+- mkdocs=1.1.2
+- mkdocs-material=6.2.4
+- mkdocs-material-extensions=1.0.1
+- pip:
+  - schemdraw

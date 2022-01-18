@@ -1,0 +1,25 @@
+site_name: EV Notes
+nav:
+    - Home: index.md
+    - Fundamentals: fundamentals.md
+    - Performance: performance.md
+    - Controller Installation: controller-installation.md
+    - BMS Installation: bms-installation.md
+extra_css:
+    - css/example.css
+    - katex/katex.min.css
+    - css/highlighting.css
+extra_javascript:
+    - katex/katex.min.js
+    - js/extra.js
+theme: material       # Nice side nav bar, maybe different font?
+plugins:
+    - search
+#theme: bootstrap      # Nav bars not showing
+#theme: bootstrap4
+#theme: ivory           # looks like readthedocs with passable font
+#theme: mkdocs          # crowed top nav bar
+#theme: windmill       # Blank page
+#theme: cluster        # issue with top nav bar
+#theme: gitbook        # side nav bar dead with local site problem
+#theme: readthedocs
