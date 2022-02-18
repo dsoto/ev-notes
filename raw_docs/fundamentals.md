@@ -38,18 +38,36 @@ $$E = Blv$$
 When we look at a rotating motor, the magnetic and wire properties are combined in the motor constant $k$.
 
 The torque is proportional to the current through the motor and this constant, $k$.
+A motor with a larger $k$ provides more torque per ampere of current.
 
 $$ T = k I $$
 
 The induced back EMF is proportional to the speed of the motor, $\omega$ and this constant $k$.
+A motor with a larger $k$ generates more voltage for a given speed.
+So motors with larger $k$ have a lower max rpm for the same voltage.
 
 $$ E = k \omega $$
 
-Motor specification sheets often publish another form of $k$, called $Kv$ which is in units of RPM per volt.
+Note that the voltage constant has the same dimensions as the torque constant.
 
-$$ E = RPM / Kv $$
+$$\frac{volt \cdot sec}{rad} = \frac{joule \cdot sec}{rad \cdot coulomb} = \frac{newton \cdot meter \cdot rad}{rad} \frac{sec}{coulomb} = \frac{newton \cdot meter}{amp} $$
 
+Motor specification sheets often publish another form of $k$, called $K_v$ which is in units of RPM per volt.
+A motor with a higher $K_v$ is a faster motor since the dimensions are inverted with respect to $k$.
 
+$$ E = RPM / K_v $$
+
+We can convert between $K_v$ and $k$ by inverting $K_v$ and converting the units.
+
+$$ \frac{min \cdot volt}{1 rev}\cdot\frac{60 sec}{min} \cdot \frac{rev}{2 \pi rad} = 9.55 \frac{volt \cdot sec}{rad}$$
+
+$$ k = 9.55 / K_v $$
+
+| Motor | Kv (rpm/volt) | k (volt-sec/rad) (N-m/amp) |
+|-|-|-|
+| Typical Bicycle Hub Motor | 10 | 0.96 |
+| Typical Skateboard Outrunner | 190 | 0.05 |
+| Lightning Rods Big Block | 62 | 0.15 |
 
 
 # Equivalent Circuit
@@ -144,18 +162,6 @@ $$P = \tau \omega$$
 
 The mechanical power equals torque multiplied by the angular velocity.
 
-## Voltage Constant
-
-- Often called Kv and expressed in rpm/volt
-- We can convert this to radians per second per volt
-
-$$\frac{rev}{min}\frac{1}{volt}\frac{2\pi\ rad}{rev}\frac{min}{60 sec} = \frac{rad}{volt \cdot sec} $$
-
-## Torque Constant
-
-Note that the torque constant is the reciprocal of the voltage constant when the voltage constant is in radians per volt per second.
-
-$$\frac{rad}{volt \cdot sec} = \frac{rad \cdot coulomb}{joule \cdot sec} = \frac{amp}{newton \cdot meter} $$
 
 :::{.instructor}
 
@@ -173,8 +179,6 @@ This needs to be refined for the torque at 30 mph
 :::
 
 # No-Load Speed
-
-# 10 No load speed
 
 You have a motor with an 10 rpm/V motor constant.
 You connect it to a 50 volt battery.
@@ -345,4 +349,3 @@ These match our definitions above.
 
 :::{.instructor}
 Why does the series show the zero as R/L but the parallel the zero is the bandwidth?
-:::
