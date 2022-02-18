@@ -349,3 +349,48 @@ These match our definitions above.
 
 :::{.instructor}
 Why does the series show the zero as R/L but the parallel the zero is the bandwidth?
+:::
+
+# RL Rise Time
+
+From Kirchoff's voltage law around the loop, we get.
+
+$$ V - IR + LI' = 0 $$
+
+To integrate, we want to get this into the form
+
+$$ \int \frac{f'}{f} = ln(f) $$
+
+Let's define $\alpha = R/L$.
+
+$$ I' = \alpha I - V/L $$
+
+$$ \frac{I'}{\alpha I - V/L} = 1 $$
+
+Multiply both sides by $\alpha$.
+
+$$ \frac{I'}{I - V/R} = \alpha $$
+
+Integrate both sides:
+
+
+$$ \int \frac{I'}{I - V/R} dt = \int \alpha dt $$
+
+$$ \ln\Big[I - V/R\Big|_0^t = \alpha t $$
+
+$$ \ln\Big[\frac{-V/R}{I-V/R}\Big] = \alpha t $$
+
+Exponentiate both sides
+
+$$ \frac{-V/R}{I-V/R} = \exp(\alpha t) $$
+
+$$ \exp(-\alpha t) \frac{-V/R}{I-V/R} = 1 $$
+
+$$ -V/R\cdot\exp(-\alpha t) = I-V/R $$
+
+$$ -V/R\cdot\exp(-\alpha t) + V/R = I $$
+
+$$ I = V/R(1 - \exp(-\alpha t)) $$
+
+
+
